@@ -13,11 +13,19 @@ import (
 func main()  {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/api/dokumen/create", controllers.CreateDocument).Methods("POST")
-	router.HandleFunc("/api/dokumen/{id}", controllers.GetDocument).Methods("GET")
-	router.HandleFunc("/api/dokumens/{syarats_id}", controllers.GetDocuments).Methods("GET")
-	router.HandleFunc("/api/syarat/{id}", controllers.GetKegiatan).Methods("GET")
-	router.HandleFunc("/api/syarats/{username}", controllers.GetKegiatans).Methods("GET")
+	api := router.PathPrefix("/api").Subrouter()
+	dokumen := api.PathPrefix("/dokumen").Subrouter()
+	syarat := api.PathPrefix("/syarat").Subrouter()
+	pegawai := api.PathPrefix("/pegawai").Subrouter()
+
+	dokumen.HandleFunc("/create", controllers.CreateDocument).Methods("POST")
+	dokumen.HandleFunc("/{id}", controllers.GetDocument).Methods("GET")
+	dokumen.HandleFunc("/syarat/{syarats_id}", controllers.GetDocuments).Methods("GET")
+	syarat.HandleFunc("/{id}", controllers.GetKegiatan).Methods("GET")
+	syarat.HandleFunc("/operator/{username}", controllers.GetKegiatans).Methods("GET")
+	pegawai.HandleFunc("/{id}", controllers.GetPegawai).Methods("GET")
+	pegawai.HandleFunc("/syarat/{syarats_id}", controllers.GetPegawais).Methods("GET")
+	pegawai.HandleFunc("/kegiatanbynip/{nip}", controllers.GetKegiatanPegawai).Methods("GET")
 
 	e := godotenv.Load()
 	if e != nil {
