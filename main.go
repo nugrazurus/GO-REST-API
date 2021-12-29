@@ -2,20 +2,36 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"go-rest-api/controllers"
 	"net/http"
+	"os"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
-func main() {
+func main()  {
 	router := mux.NewRouter()
-	router.HandleFunc("/getsyarat", getSyaratAll).Methods("GET")
-	router.HandleFunc("/getdokumen", getDokumenAll).Methods("GET")
-	router.HandleFunc("/getkegiatan/{nip}", getKegiatanByNip).Methods("GET")
-	http.Handle("/", router)
-	fmt.Println("Connected to port 3000")
-	log.Fatal(http.ListenAndServe(":3000", router))
-}
 
+	router.HandleFunc("/api/dokumen/create", controllers.CreateDocument).Methods("POST")
+	router.HandleFunc("/api/dokumen/{id}", controllers.GetDocument).Methods("GET")
+	router.HandleFunc("/api/dokumens/{syarats_id}", controllers.GetDocuments).Methods("GET")
+	router.HandleFunc("/api/syarat/{id}", controllers.GetKegiatan).Methods("GET")
+	router.HandleFunc("/api/syarats/{username}", controllers.GetKegiatans).Methods("GET")
+
+	e := godotenv.Load()
+	if e != nil {
+		fmt.Println(e)
+	}
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	fmt.Println(port)
+	err := http.ListenAndServe(":"+port, router)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
