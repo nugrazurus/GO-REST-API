@@ -21,8 +21,11 @@ func main()  {
 	dokumen.HandleFunc("/create", controllers.CreateDocument).Methods("POST")
 	dokumen.HandleFunc("/{id}", controllers.GetDocument).Methods("GET")
 	dokumen.HandleFunc("/syarat/{syarats_id}", controllers.GetDocuments).Methods("GET")
+
+	syarat.HandleFunc("/", controllers.CreateKegiatan).Methods("POST")
 	syarat.HandleFunc("/{id}", controllers.GetKegiatan).Methods("GET")
 	syarat.HandleFunc("/operator/{username}", controllers.GetKegiatans).Methods("GET")
+
 	pegawai.HandleFunc("/{id}", controllers.GetPegawai).Methods("GET")
 	pegawai.HandleFunc("/syarat/{syarats_id}", controllers.GetPegawais).Methods("GET")
 	pegawai.HandleFunc("/kegiatanbynip/{nip}", controllers.GetKegiatanPegawai).Methods("GET")
