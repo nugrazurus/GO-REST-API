@@ -17,6 +17,7 @@ func main()  {
 	dokumen := api.PathPrefix("/dokumen").Subrouter()
 	syarat := api.PathPrefix("/syarat").Subrouter()
 	pegawai := api.PathPrefix("/pegawai").Subrouter()
+	rubrik := api.PathPrefix("/rubrik").Subrouter()
 
 	dokumen.HandleFunc("/create", controllers.CreateDocument).Methods("POST")
 	dokumen.HandleFunc("/{id}", controllers.GetDocument).Methods("GET")
@@ -25,10 +26,13 @@ func main()  {
 	syarat.HandleFunc("/", controllers.CreateKegiatan).Methods("POST")
 	syarat.HandleFunc("/{id}", controllers.GetKegiatan).Methods("GET")
 	syarat.HandleFunc("/operator/{username}", controllers.GetKegiatans).Methods("GET")
-
+	
 	pegawai.HandleFunc("/{id}", controllers.GetPegawai).Methods("GET")
 	pegawai.HandleFunc("/syarat/{syarats_id}", controllers.GetPegawais).Methods("GET")
 	pegawai.HandleFunc("/kegiatanbynip/{nip}", controllers.GetKegiatanPegawai).Methods("GET")
+	
+	rubrik.HandleFunc("/all", controllers.GetRubrikAll).Methods("GET")
+	rubrik.HandleFunc("/{id}", controllers.GetRubrikByID).Methods("GET")
 
 	e := godotenv.Load()
 	if e != nil {

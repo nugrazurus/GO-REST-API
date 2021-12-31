@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	// "github.com/joho/godotenv"
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -12,10 +12,10 @@ import (
 var db *gorm.DB
 
 func init()  {
-	// e := godotenv.Load()
-	// if e != nil {
-	// 	fmt.Print(e)
-	// }
+	e := godotenv.Load()
+	if e != nil {
+		fmt.Print(e)
+	}
 
 	username := os.Getenv("db_user")
 	password := os.Getenv("db_pass")
